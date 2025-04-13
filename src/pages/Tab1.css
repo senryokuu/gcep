@@ -1,0 +1,14 @@
+.post{
+      height: auto;
+      max-width: 800px;
+      margin: auto;
+      margin-bottom: 10px;
+      align-items: center;
+      justify-content: center;
+}
+
+@media (max-width: 480px) {
+      .post {
+        width: 100;
+      }
+}

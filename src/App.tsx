@@ -10,7 +10,7 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, square, triangle, star, heart } from 'ionicons/icons';
+import { home, school, book, notifications, person } from 'ionicons/icons';
 import Tab1 from './pages/Tab1';
 import Tab2 from './pages/Tab2';
 import Tab3 from './pages/Tab3';
@@ -42,7 +42,7 @@ import '@ionic/react/css/display.css';
 
 /* import '@ionic/react/css/palettes/dark.always.css'; */
 /* import '@ionic/react/css/palettes/dark.class.css'; */
-import '@ionic/react/css/palettes/dark.system.css';
+//import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 import './theme/variables.css';
@@ -75,24 +75,24 @@ const App: React.FC = () => (
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
           <IonTabButton tab="home" href="/home">
-            <IonIcon aria-hidden="true" icon={triangle} />
-            <IonLabel>Home</IonLabel>
+            <IonIcon aria-hidden="true" icon={home} />
+            <IonLabel></IonLabel>
           </IonTabButton>
           <IonTabButton tab="campus" href="/campus">
-            <IonIcon aria-hidden="true" icon={ellipse} />
-            <IonLabel>Campus</IonLabel>
+            <IonIcon aria-hidden="true" icon={school} />
+            <IonLabel></IonLabel>
           </IonTabButton>
           <IonTabButton tab="department" href="/department">
-            <IonIcon aria-hidden="true" icon={square} />
-            <IonLabel>Department</IonLabel>
+            <IonIcon aria-hidden="true" icon={book} />
+            <IonLabel></IonLabel>
           </IonTabButton>
           <IonTabButton tab="notifications" href="/notifications">
-            <IonIcon aria-hidden="true" icon={star} />
-            <IonLabel>Notifications</IonLabel>
+            <IonIcon aria-hidden="true" icon={notifications} />
+            <IonLabel></IonLabel>
           </IonTabButton>
           <IonTabButton tab="profile" href="/profile">
-            <IonIcon aria-hidden="true" icon={heart} />
-            <IonLabel>Profile</IonLabel>
+            <IonIcon aria-hidden="true" icon={person} />
+            <IonLabel></IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonTabs>
