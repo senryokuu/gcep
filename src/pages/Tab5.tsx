@@ -20,8 +20,8 @@ const Tab5: React.FC = () => {
                   <IonCard key={index} className="profile">
                     <IonCardHeader>
                       <div style={{ display: 'flex', alignItems: 'center'}}>
-                        <IonThumbnail style={{ width: '100px', height: '100px', marginRight: '20px'}}>
-                          <img src="../resources/backpain.gif" alt="profile picture" style={{borderRadius: '50%px'}}/>
+                        <IonThumbnail style={{ width: '100px', height: '100px', marginRight: '30px'}}>
+                          <img src="../resources/roll.jpeg" alt="profile picture" style={{borderRadius: '50%'}}/>
                         </IonThumbnail>
                         <div>
                           <IonCardTitle className="profile-name" style={{ marginBottom: '4px' }}>{cred.name}</IonCardTitle>
