@@ -7,6 +7,34 @@
       justify-content: center;
 }
 
+.tag {
+      color: white;
+      padding: 5px;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: x-small;
+}
+
+.gc-tag {
+      background-color: var(--ion-color-gc);
+}
+
+.bscs-tag {
+      background-color: var(--ion-color-bscs);
+}
+
+
+.cba-tag {
+      background-color: var(--ion-color-cba);
+}
+
+.events-description {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+}
+
+
 @media (max-width: 480px) {
       .post {
         width: 50;

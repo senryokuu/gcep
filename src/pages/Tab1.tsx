@@ -1,26 +1,17 @@
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import './Tab1.css';
+import { events } from '../data/eventsData';
 
-const events = [
-  {
-    title: "Event 1",
-    date: "May 3, 2025",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam lacus urna, faucibus sed fermentum nec, semper ut mauris. Sed ac semper nibh.",
-    image: "/resources/splash.png",
-  },
-  {
-    title: "Event 2",
-    date: "May 4, 2025",
-    description: "Nulla volutpat, velit ac mattis maximus, nisl mauris efficitur leo, luctus consequat lectus felis nec tellus. Proin sapien metus, dignissim id lorem non, mattis placerat lacus.",
-    image: "/resources/sample1.jpg",
-  },
-  {
-    title: "Event 3",
-    date: "May 5, 2025",
-    description: "In iaculis vestibulum mi at elementum. Maecenas scelerisque, leo quis vestibulum tincidunt, felis mauris bibendum arcu, luctus blandit tellus velit et sem.",
-    image: "/resources/sample2.jpg",
-  },
-];
+export const getTagColorClass = (tag: string) => {
+  switch (tag) {
+    case "Gordon College":
+      return "gc-tag";
+    case "BSCS":
+      return "bscs-tag";
+    case "CBA":
+      return "cba-tag";
+  }
+};
 
 const Tab1: React.FC = () => {
   return (
@@ -45,15 +36,19 @@ const Tab1: React.FC = () => {
                   <img src={event.image} alt={event.title} style={{height: '250px', width: '100%', objectFit: 'cover'}}/>
                   <IonCardHeader>
                     <IonCardTitle>{event.title}</IonCardTitle>
-                    <IonCardSubtitle>{event.date}</IonCardSubtitle>
+                    <IonCardSubtitle>{event.filter1 && (<span className={`tag ${getTagColorClass(event.filter1)}`}>{event.filter1}</span>)}
+                                      {event.filter2 && (<span className={`tag ${getTagColorClass(event.filter2)}`}>{event.filter2}</span> )}
+                                      <br></br><br></br> {event.date}
+                    </IonCardSubtitle>
                   </IonCardHeader>
-                  <IonCardContent>{event.description}</IonCardContent>
+                  <IonCardContent className="events-description">{event.description}</IonCardContent>
                   <IonButton fill="clear">Sign up</IonButton>
                 </IonCard>
               ))}
             </IonCol>
           </IonRow>
         </IonGrid>
+        
       </IonContent>
     </IonPage>
   );

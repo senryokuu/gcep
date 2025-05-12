@@ -1,5 +1,19 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import './Tab2.css';
+import { events } from '../data/eventsData';
+
+const filteredEvents = events.filter(event => event.filter1 === 'Gordon College');
+
+export const getTagColorClass = (tag: string) => {
+  switch (tag) {
+    case "Gordon College":
+      return "gc-tag";
+    case "BSCS":
+      return "bscs-tag";
+    case "CBA":
+      return "cba-tag";
+  }
+};
 
 const Tab2: React.FC = () => {
   return (
@@ -15,6 +29,28 @@ const Tab2: React.FC = () => {
             <IonTitle size="large">Campus Events</IonTitle>
           </IonToolbar>
         </IonHeader>
+
+        <IonGrid>
+          <IonRow>
+            <IonCol>
+              {filteredEvents.map((event, index) => (
+                <IonCard key={index} className="post">
+                  <img src={event.image} alt={event.title} style={{height: '250px', width: '100%', objectFit: 'cover'}}/>
+                  <IonCardHeader>
+                    <IonCardTitle>{event.title}</IonCardTitle>
+                    <IonCardSubtitle>{event.filter1 && (<span className={`tag ${getTagColorClass(event.filter1)}`}>{event.filter1}</span>)}
+                                      {event.filter2 && (<span className={`tag ${getTagColorClass(event.filter2)}`}>{event.filter2}</span> )}
+                                      <br></br><br></br> {event.date}
+                    </IonCardSubtitle>
+                  </IonCardHeader>
+                  <IonCardContent className="events-description">{event.description}</IonCardContent>
+                  <IonButton fill="clear">Sign up</IonButton>
+                </IonCard>
+              ))}
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+
       </IonContent>
     </IonPage>
   );

@@ -82,20 +82,20 @@ const App: React.FC = () => (
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
           <IonTabButton tab="campus" href="/campus">
-            <IonIcon aria-hidden="true" icon={school} />
+            <IonIcon icon={school} />
             <IonLabel>Campus</IonLabel>
           </IonTabButton>
           <IonTabButton tab="department" href="/department">
-            <IonIcon aria-hidden="true" icon={book} />
+            <IonIcon icon={book} />
             <IonLabel>Department</IonLabel>
           </IonTabButton>
           <IonTabButton disabled ></IonTabButton>
           <IonTabButton tab="notifications" href="/notifications">
-            <IonIcon aria-hidden="true" icon={notifications} />
+            <IonIcon icon={notifications} />
             <IonLabel>Notifications</IonLabel>
           </IonTabButton>
           <IonTabButton tab="profile" href="/profile">
-            <IonIcon aria-hidden="true" icon={person} />
+            <IonIcon icon={person} />
             <IonLabel>Profile</IonLabel>
           </IonTabButton>
         </IonTabBar>
@@ -103,7 +103,7 @@ const App: React.FC = () => (
     </IonReactRouter>
       <IonFab vertical="bottom" horizontal="center" slot="fixed">
       <IonFabButton href="/home">
-        <IonIcon aria-hidden="true" icon={home} />
+        <IonIcon icon={home} />
         <IonLabel></IonLabel>
       </IonFabButton>
       </IonFab>
