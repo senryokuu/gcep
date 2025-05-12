@@ -1,0 +1,22 @@
+ion-tab-bar {
+      border-top: 3px solid var(--ion-color-gc);
+}
+
+ion-tab-button {
+      color: black
+}
+
+ion-tab-button ion-icon {
+      color: var(--ion-color-gc);
+}
+
+ion-fab-button {
+      --background : white;
+      --color: var(--ion-color-gc);
+}
+
+@media (max-width: 480px) {
+      ion-tab-button ion-label {
+            display: none;
+      }
+}

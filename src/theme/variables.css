@@ -1,2 +1,8 @@
 /* For information on how to create your own theme, please see:
 http://ionicframework.com/docs/theming/ */
+
+:root {
+      --ion-color-gc: #039215;
+      --ion-color-gc-light: #90ff9f;
+      --ion-color-gc-tint: #cbffd2;
+}

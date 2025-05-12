@@ -1,6 +1,6 @@
 .post{
       height: auto;
-      max-width: 800px;
+      max-width: 700px;
       margin: auto;
       margin-bottom: 10px;
       align-items: center;
@@ -9,6 +9,6 @@
 
 @media (max-width: 480px) {
       .post {
-        width: 100;
+        width: 50;
       }
 }
