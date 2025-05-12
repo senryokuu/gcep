@@ -1,5 +1,5 @@
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
-import './Tab3.css';
+import './Tabs.css';
 import { events } from '../data/eventsData';
 
 const filteredEvents = events.filter(event => event.filter2 === 'BSCS');
@@ -24,11 +24,6 @@ const Tab3: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Department Events</IonTitle>
-          </IonToolbar>
-        </IonHeader>
 
         <IonGrid>
           <IonRow>

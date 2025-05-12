@@ -1,3 +1,11 @@
+ion-toolbar {
+      border-bottom: 3px solid var(--ion-color-gc);
+}
+
+ion-title {
+      color: black;
+}
+
 .post{
       height: auto;
       max-width: 700px;
@@ -38,5 +46,12 @@
 @media (max-width: 480px) {
       .post {
         width: 50;
+      }
+      ion-toolbar {
+            height: 40px;
+      }
+      ion-title {
+            margin-bottom: 15px;
+            font-size: x-small;
       }
 }
