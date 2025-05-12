@@ -16,6 +16,7 @@ import Tab2 from './pages/Tab2';
 import Tab3 from './pages/Tab3';
 import Tab4 from './pages/Tab4';
 import Tab5 from './pages/Tab5';
+import Login from './Login'
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -55,7 +56,7 @@ const App: React.FC = () => (
       <IonTabs>
         <IonRouterOutlet>
           <Route exact path="/">
-            <Redirect to="/home" />
+            <Redirect to="/Login" />
           </Route>
           <Route exact path="/home">
             <Tab1 />
@@ -74,16 +75,16 @@ const App: React.FC = () => (
           </Route>
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
-          <IonTabButton tab="home" href="/home">
-            <IonIcon aria-hidden="true" icon={home} />
-            <IonLabel></IonLabel>
-          </IonTabButton>
           <IonTabButton tab="campus" href="/campus">
             <IonIcon aria-hidden="true" icon={school} />
             <IonLabel></IonLabel>
           </IonTabButton>
           <IonTabButton tab="department" href="/department">
             <IonIcon aria-hidden="true" icon={book} />
+            <IonLabel></IonLabel>
+          </IonTabButton>
+          <IonTabButton tab="home" href="/home">
+            <IonIcon aria-hidden="true" icon={home} />
             <IonLabel></IonLabel>
           </IonTabButton>
           <IonTabButton tab="notifications" href="/notifications">
