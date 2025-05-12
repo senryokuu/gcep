@@ -21,11 +21,12 @@ const Tab1: React.FC = () => {
           <IonTitle>Home</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
 
+      <IonContent fullscreen>
         <IonGrid>
           <IonRow>
             <IonCol>
+
               {events.map((event, index) => (
                 <IonCard key={index} className="post">
                   <img src={event.image} alt={event.title} style={{height: '250px', width: '100%', objectFit: 'cover'}}/>
@@ -40,11 +41,12 @@ const Tab1: React.FC = () => {
                   <IonButton fill="clear">Sign up</IonButton>
                 </IonCard>
               ))}
+              
             </IonCol>
           </IonRow>
         </IonGrid>
-        
       </IonContent>
+
     </IonPage>
   );
 };

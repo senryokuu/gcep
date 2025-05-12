@@ -4,7 +4,17 @@ ion-tab-bar {
 }
 
 ion-tab-button {
-      color: black
+      color: black;
+      --ripple-color: var(--ion-color-bscs);
+}
+
+ion-tab-button:hover ion-label{
+      color: var(--ion-color-gc);
+}
+
+ion-tab-button.tab-selected {
+      color: black;
+      background-color: #efefef;
 }
 
 ion-tab-button ion-icon {
@@ -15,6 +25,7 @@ ion-fab-button {
       --background : white;
       --color: var(--ion-color-gc);
 }
+
 
 @media (max-width: 480px) {
       ion-tab-bar {

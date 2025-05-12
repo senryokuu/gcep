@@ -9,13 +9,19 @@ const Tab4: React.FC = () => {
           <IonTitle>Notifications</IonTitle>
         </IonToolbar>
       </IonHeader>
+
       <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Notifications</IonTitle>
-          </IonToolbar>
-        </IonHeader>
+        <IonGrid>
+          <IonRow>
+            <IonCol>
+
+
+
+            </IonCol>
+          </IonRow>
+        </IonGrid>
       </IonContent>
+
     </IonPage>
   );
 };

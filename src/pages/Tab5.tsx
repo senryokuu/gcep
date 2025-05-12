@@ -1,4 +1,4 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import './Tabs.css';
 
 const Tab5: React.FC = () => {
@@ -6,16 +6,22 @@ const Tab5: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Profile</IonTitle>
+          <IonTitle>[Ryunosuke Romualdo]</IonTitle>
         </IonToolbar>
       </IonHeader>
+
       <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Profile</IonTitle>
-          </IonToolbar>
-        </IonHeader>
+        <IonGrid>
+          <IonRow>
+            <IonCol>
+
+
+
+            </IonCol>
+          </IonRow>
+        </IonGrid>
       </IonContent>
+
     </IonPage>
   );
 };

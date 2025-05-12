@@ -104,7 +104,6 @@ const App: React.FC = () => (
       <IonFab vertical="bottom" horizontal="center" slot="fixed">
       <IonFabButton href="/home">
         <IonIcon icon={home} />
-        <IonLabel></IonLabel>
       </IonFabButton>
       </IonFab>
   </IonApp>
