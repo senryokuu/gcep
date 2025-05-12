@@ -8,6 +8,11 @@ ion-tab-button {
       --ripple-color: var(--ion-color-bscs);
 }
 
+ion-tab-button:hover {
+      color: black;
+      background-color: #efefef;
+}
+
 ion-tab-button:hover ion-label{
       color: var(--ion-color-gc);
 }

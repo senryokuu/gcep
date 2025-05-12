@@ -31,7 +31,7 @@ const Tab3: React.FC = () => {
               
               {filteredEvents.map((event, index) => (
                 <IonCard key={index} className="post">
-                  <img src={event.image} alt={event.title} style={{height: '250px', width: '100%', objectFit: 'cover'}}/>
+                  <img src={event.image} alt={event.title} style={{height: '200px', width: '100%', objectFit: 'cover'}}/>
                   <IonCardHeader>
                     <IonCardTitle>{event.title}</IonCardTitle>
                     <IonCardSubtitle>{event.filter1 && (<span className={`tag ${getTagColorClass(event.filter1)}`}>{event.filter1}</span>)}
