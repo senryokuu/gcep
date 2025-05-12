@@ -1,6 +1,8 @@
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
+  IonFab,
+  IonFabButton,
   IonIcon,
   IonLabel,
   IonRouterOutlet,
@@ -11,6 +13,7 @@ import {
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { home, school, book, notifications, person } from 'ionicons/icons';
+import './App.css';
 import Tab1 from './pages/Tab1';
 import Tab2 from './pages/Tab2';
 import Tab3 from './pages/Tab3';
@@ -80,27 +83,30 @@ const App: React.FC = () => (
         <IonTabBar slot="bottom">
           <IonTabButton tab="campus" href="/campus">
             <IonIcon aria-hidden="true" icon={school} />
-            <IonLabel></IonLabel>
+            <IonLabel>Campus</IonLabel>
           </IonTabButton>
           <IonTabButton tab="department" href="/department">
             <IonIcon aria-hidden="true" icon={book} />
-            <IonLabel></IonLabel>
+            <IonLabel>Department</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="home" href="/home">
-            <IonIcon aria-hidden="true" icon={home} />
-            <IonLabel></IonLabel>
-          </IonTabButton>
+          <IonTabButton></IonTabButton>
           <IonTabButton tab="notifications" href="/notifications">
             <IonIcon aria-hidden="true" icon={notifications} />
-            <IonLabel></IonLabel>
+            <IonLabel>Notifications</IonLabel>
           </IonTabButton>
           <IonTabButton tab="profile" href="/profile">
             <IonIcon aria-hidden="true" icon={person} />
-            <IonLabel></IonLabel>
+            <IonLabel>Profile</IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonTabs>
     </IonReactRouter>
+      <IonFab vertical="bottom" horizontal="center" slot="fixed">
+      <IonFabButton href="/home">
+        <IonIcon aria-hidden="true" icon={home} />
+        <IonLabel></IonLabel>
+      </IonFabButton>
+      </IonFab>
   </IonApp>
 );
 
