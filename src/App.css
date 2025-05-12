@@ -1,4 +1,5 @@
 ion-tab-bar {
+      height: 50px;
       border-top: 3px solid var(--ion-color-gc);
 }
 
@@ -16,6 +17,12 @@ ion-fab-button {
 }
 
 @media (max-width: 480px) {
+      ion-tab-bar {
+            height: 40px;
+      }
+      ion-tab-button {
+            margin-bottom: 4px;
+      }
       ion-tab-button ion-label {
             display: none;
       }

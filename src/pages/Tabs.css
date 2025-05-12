@@ -1,8 +1,10 @@
 ion-toolbar {
+      height: 50px;
       border-bottom: 3px solid var(--ion-color-gc);
 }
 
 ion-title {
+      margin-bottom: 8px;
       color: black;
 }
 
