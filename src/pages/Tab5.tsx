@@ -7,7 +7,14 @@ const Tab5: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Profile</IonTitle>
+          <div style={{ display: 'flex', alignItems: 'center'}}>
+            <img src="assets/icon.png" alt="logo" style={{ width: '40px', height: '40px', marginBottom: '10px', marginLeft: '20px'}} />
+            <IonTitle style={{ marginTop:'5px'}}>
+              {usercreds.map((cred, index) => (
+              <span key={index}>{cred.username}</span>
+              ))}
+            </IonTitle>
+          </div>
         </IonToolbar>
       </IonHeader>
 
@@ -21,7 +28,7 @@ const Tab5: React.FC = () => {
                     <IonCardHeader>
                       <div style={{ display: 'flex', alignItems: 'center'}}>
                         <IonThumbnail className="pfp">
-                          <img src="../resources/roll.jpeg" alt="profile picture" style={{borderRadius: '50%'}}/>
+                          <img src= {cred.pfp} alt="profile picture" style={{borderRadius: '50%'}}/>
                         </IonThumbnail>
                         <div>
                           <IonCardTitle className="profile-name" style={{ marginBottom: '10px' }}>{cred.name}</IonCardTitle>
@@ -39,6 +46,9 @@ const Tab5: React.FC = () => {
                         </IonItem>
                         <IonItem button routerLink="/notifications">
                           <IonLabel>Settings</IonLabel>
+                        </IonItem>
+                        <IonItem button routerLink="/login">
+                          <IonLabel>Logout</IonLabel>
                         </IonItem>
                       </IonList>
                     </IonCardContent>

@@ -5,7 +5,7 @@ export const events = [
     filter2: "",
     date: "May 3, 2025",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam lacus urna, faucibus sed fermentum nec, semper ut mauris. Sed ac semper nibh.",
-    image: "/resources/splash.png",
+    image: "assets/splash.png",
   },
   {
     title: "Event 2",
@@ -13,7 +13,7 @@ export const events = [
     filter2: "BSCS",
     date: "May 4, 2025",
     description: "Nulla volutpat, velit ac mattis maximus, nisl mauris efficitur leo, luctus consequat lectus felis nec tellus. Proin sapien metus, dignissim id lorem non, mattis placerat lacus.",
-    image: "/resources/sample1.jpg",
+    image: "assets/sample1.jpg",
   },
   {
     title: "Event 3",
@@ -21,6 +21,6 @@ export const events = [
     filter2: "CBA",
     date: "May 5, 2025",
     description: "In iaculis vestibulum mi at elementum. Maecenas scelerisque, leo quis vestibulum tincidunt, felis mauris bibendum arcu, luctus blandit tellus velit et sem.",
-    image: "/resources/sample2.jpg",
+    image: "assets/sample2.jpg",
   },
 ];

@@ -20,7 +20,10 @@ const Tab3: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Department Events</IonTitle>
+          <div style={{ display: 'flex', alignItems: 'center'}}>
+            <img src="assets/icon.png" alt="logo" style={{ width: '40px', height: '40px', marginBottom: '10px', marginLeft: '20px'}} />
+            <IonTitle style={{ marginTop:'5px'}}>Department</IonTitle>
+          </div>
         </IonToolbar>
       </IonHeader>
       

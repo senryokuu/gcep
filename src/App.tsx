@@ -70,13 +70,13 @@ const App: React.FC = () => (
           <Route exact path="/campus">
             <Tab2 />
           </Route>
-          <Route path="/department">
+          <Route exact path="/department">
             <Tab3 />
           </Route>
-          <Route path="/notifications">
+          <Route exact path="/notifications">
             <Tab4 />
           </Route>
-          <Route path="/profile">
+          <Route exact path="/profile">
             <Tab5 />
           </Route>
         </IonRouterOutlet>
@@ -100,12 +100,12 @@ const App: React.FC = () => (
           </IonTabButton>
         </IonTabBar>
       </IonTabs>
-    </IonReactRouter>
       <IonFab vertical="bottom" horizontal="center" slot="fixed">
-      <IonFabButton href="/home">
+      <IonFabButton routerLink="/home">
         <IonIcon icon={home} />
       </IonFabButton>
       </IonFab>
+    </IonReactRouter>
   </IonApp>
 );
 

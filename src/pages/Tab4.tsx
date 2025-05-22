@@ -6,7 +6,10 @@ const Tab4: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Notifications</IonTitle>
+          <div style={{ display: 'flex', alignItems: 'center'}}>
+            <img src="assets/icon.png" alt="logo" style={{ width: '40px', height: '40px', marginBottom: '10px', marginLeft: '20px'}} />
+            <IonTitle style={{ marginTop:'5px'}}>Notifications</IonTitle>
+          </div>
         </IonToolbar>
       </IonHeader>
 
