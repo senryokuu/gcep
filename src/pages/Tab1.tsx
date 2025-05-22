@@ -19,7 +19,7 @@ const Tab1: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <div style={{ display: 'flex', alignItems: 'center'}}>
-            <img src="assets/icon.png" alt="logo" style={{ width: '40px', height: '40px', marginBottom: '10px', marginLeft: '20px'}} />
+            <img src="favicon.png" alt="logo" style={{ width: '40px', height: '40px', marginBottom: '10px', marginLeft: '20px'}} />
             <IonTitle style={{ marginTop:'5px'}}>Home</IonTitle>
           </div>
         </IonToolbar>
