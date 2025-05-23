@@ -34,12 +34,12 @@ const Tab2: React.FC = () => {
 
               {filteredEvents.map((event, index) => (
                 <IonCard key={index} className="post">
-                  <img src={event.image} alt={event.title} style={{height: '200px', width: '100%', objectFit: 'cover'}}/>
+                  <img src={event.image} alt={event.title} style={{height: '300px', width: '100%', objectFit: 'cover'}}/>
                   <IonCardHeader>
                     <IonCardTitle>{event.title}</IonCardTitle>
                     <IonCardSubtitle>{event.filter1 && (<span className={`tag ${getTagColorClass(event.filter1)}`}>{event.filter1}</span>)}
                                       {event.filter2 && (<span className={`tag ${getTagColorClass(event.filter2)}`}>{event.filter2}</span> )}
-                                      <br></br><br></br> {event.date}
+                                      <br></br><br></br> {event.time} - {event.date}
                     </IonCardSubtitle>
                   </IonCardHeader>
                   <IonCardContent className="events-description">{event.description}</IonCardContent>

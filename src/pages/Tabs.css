@@ -38,7 +38,7 @@ ion-title {
 
 @media (max-width: 480px) {
       .post {
-            width: 50;
+            width: 50px;
       }
       ion-toolbar {
             height: 40px;
@@ -50,7 +50,7 @@ ion-title {
 
       /*profile*/
       .profile {
-            width: 50;
+            width: 50px;
       }
       .pfp {
             height: 80px;

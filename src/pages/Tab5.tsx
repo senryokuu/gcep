@@ -1,6 +1,7 @@
-import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonItem, IonLabel, IonList, IonPage, IonRow, IonThumbnail, IonTitle, IonToolbar } from '@ionic/react';
+import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonPage, IonRow, IonThumbnail, IonTitle, IonToolbar } from '@ionic/react';
 import './Tabs.css';
 import { usercreds } from '../data/userCreds';
+import { add } from 'ionicons/icons';
 
 const Tab5: React.FC = () => {
   return (
@@ -38,7 +39,7 @@ const Tab5: React.FC = () => {
                     </IonCardHeader>
                     <IonCardContent>
                       <IonList>
-                        <IonItem button routerLink="/campus">
+                        <IonItem button routerLink="/manage_events">
                           <IonLabel>Manage Events</IonLabel>
                         </IonItem>
                         <IonItem button routerLink="/department">
@@ -59,7 +60,6 @@ const Tab5: React.FC = () => {
           </IonRow>
         </IonGrid>
       </IonContent>
-
     </IonPage>
   );
 };
