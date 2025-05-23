@@ -17,6 +17,7 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
+import { useHistory } from 'react-router-dom';
 
 const CreateEvent: React.FC = () => {
   const [title, setTitle] = useState('');
@@ -27,6 +28,7 @@ const CreateEvent: React.FC = () => {
   const [description, setDescription] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const history = useHistory();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -53,8 +55,8 @@ const CreateEvent: React.FC = () => {
       image: imagePreview || 'assets/default.jpg',
     };
 
-    console.log('Event Data:', eventData);
-    // Here you can save the eventData or do whatever you want
+    localStorage.setItem('newEvent', JSON.stringify(eventData));
+    history.push('/home');
   };
 
   return (
@@ -77,9 +79,8 @@ const CreateEvent: React.FC = () => {
           <IonRow>
             <IonCol size-md="6" offset-md="3" size-xs="12">
               <form onSubmit={handleSubmit} style={{ padding: 20, boxShadow: '0 0 30px rgba(0, 0, 0, 0.2)' }}>
-
                 <IonItem>
-                  <div style={{ marginTop: 15, flexDirection: 'column'}}>
+                  <div style={{ marginTop: 15, flexDirection: 'column' }}>
                     <IonLabel>Upload Event Image</IonLabel>
                     <input
                       type="file"
@@ -171,7 +172,6 @@ const CreateEvent: React.FC = () => {
                   expand="block"
                   type="submit"
                   style={{ marginTop: 30 }}
-                  routerLink="/home"
                 >
                   Create Event
                 </IonButton>
