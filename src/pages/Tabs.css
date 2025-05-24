@@ -38,7 +38,7 @@ ion-title {
 
 @media (max-width: 480px) {
       .post {
-            width: 50px;
+            width: 100%;
       }
       ion-toolbar {
             height: 40px;
