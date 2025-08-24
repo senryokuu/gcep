@@ -3,7 +3,7 @@ import './Tabs.css';
 import { add } from 'ionicons/icons';
 import { events } from '../data/eventsData';
 
-const filteredEvents = events.filter(event => event.filter2 === 'CBA');
+const filteredEvents = events.filter(event => event.filter2 === 'BSCS');
 
 export const getTagColorClass = (tag: string) => {
 	switch (tag) {
