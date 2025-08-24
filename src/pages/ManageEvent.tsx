@@ -24,8 +24,8 @@ const ManageEvents: React.FC = () => {
             <IonHeader>
                 <IonToolbar>
 					<div style={{ display: 'flex', alignItems: 'center' }}>
-						<img src="assets/favicon.png" alt="nig" style={{ width: '40px', height: '40px', marginBottom: '10px', marginLeft: '20px' }} />
-						<IonTitle style={{ marginTop: '5px' }}>Home</IonTitle>
+						<img src="assets/favicon.png" alt="logo" style={{ width: '40px', height: '40px', marginBottom: '10px', marginLeft: '20px' }} />
+						<IonTitle style={{ marginTop: '5px' }}>Manage Events</IonTitle>
 					</div>
 				</IonToolbar>
             </IonHeader>
@@ -53,7 +53,6 @@ const ManageEvents: React.FC = () => {
                                         </IonCardSubtitle>
                                     </IonCardHeader>
                                     <IonCardContent className="events-description">{event.description}</IonCardContent>
-                                    <IonButton fill="clear">Sign up</IonButton>
                                 </IonCard>
                             ))}
                         
