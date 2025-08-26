@@ -1,5 +1,7 @@
 {
   "name": "GCEP",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "react-vite"
 }
