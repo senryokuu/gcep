@@ -1,4 +1,5 @@
-import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonPage, IonRow, IonThumbnail, IonTitle, IonToolbar } from '@ionic/react';
+import { IonList, IonItem, IonThumbnail, IonLabel, IonIcon, IonFab, IonFabButton, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
+import { home } from 'ionicons/icons';
 import './Tabs.css';
 import { usercreds } from '../data/userCreds';
 import { add } from 'ionicons/icons';
@@ -59,6 +60,11 @@ const Tab5: React.FC = () => {
             </IonCol>
           </IonRow>
         </IonGrid>
+        <IonFab vertical="bottom" horizontal="center" className="home-fab">
+						<IonFabButton routerLink="/home" className="home-fab-button">
+							<IonIcon icon={home} />
+						</IonFabButton>
+					</IonFab>
       </IonContent>
     </IonPage>
   );

@@ -8,4 +8,8 @@ http://ionicframework.com/docs/theming/ */
 
       --ion-color-bscs: #fc8602;
       --ion-color-cba: #ffd500;
+
+      --ion-color-bg: #1d2030;
+      --ion-color-mg: #2c2f35;
+      --ion-color-fg: #1e2022;
 }

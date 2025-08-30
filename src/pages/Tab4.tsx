@@ -1,4 +1,5 @@
-import { IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
+import { IonIcon, IonFab, IonFabButton, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
+import { home } from 'ionicons/icons';
 import './Tabs.css';
 
 const Tab4: React.FC = () => {
@@ -23,6 +24,11 @@ const Tab4: React.FC = () => {
             </IonCol>
           </IonRow>
         </IonGrid>
+        <IonFab vertical="bottom" horizontal="center" className="home-fab">
+						<IonFabButton routerLink="/home" className="home-fab-button">
+							<IonIcon icon={home} />
+						</IonFabButton>
+					</IonFab>
       </IonContent>
 
     </IonPage>

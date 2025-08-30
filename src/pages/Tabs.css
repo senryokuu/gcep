@@ -1,3 +1,7 @@
+:root {
+      --tabbar-height: 50px;  /* match your tab bar CSS */
+    }
+
 ion-toolbar {
       height: 50px;
       border-bottom: 3px solid var(--ion-color-gc);
@@ -5,6 +9,17 @@ ion-toolbar {
 ion-title {
       margin-bottom: 8px;
       color: black;
+}
+
+.home-fab {
+      position: fixed !important;
+      z-index: 9999;
+      bottom: -10px;
+    }
+
+.home-fab-button {
+      --background: white;
+      --color: var(--ion-color-gc);
 }
 
 .post{

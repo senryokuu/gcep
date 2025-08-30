@@ -2,6 +2,8 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { AuthCredential } from "firebase/auth/web-extension";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -24,5 +26,17 @@ const analytics = getAnalytics(app);
 
 // Initialize a service like Firestore
 const db = getFirestore(app);
+const auth = getAuth(app);
+
+export async function registerUser(username: string, password:string) {
+  try {
+    const res = await createUserWithEmailAndPassword(auth, username, password)
+    console.log(res)
+  }
+  catch(error){
+    console.log(error)
+    return false
+  }
+}
 
 export { db };

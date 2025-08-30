@@ -1,7 +1,26 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonToast } from '@ionic/react';
+import { useState } from 'react';
 // import './Register.css';
+import { registerUser } from './firebaseConfig'
 
-const Login: React.FC = () => {
+const Register: React.FC = () => {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [cpassword, setcPassword] = useState('')
+  const [showToast, setShowToast] = useState(false);
+
+  async function register() {
+    if (password !== cpassword) {
+      setShowToast(true)
+      return
+    }
+    if(username.trim() === '' || password.trim() === '' ) {
+      setShowToast(true)
+      return
+    }
+    const res = await registerUser(username, password)
+  }
+
   return (
     <IonPage>
       <IonHeader>
@@ -10,14 +29,9 @@ const Login: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Register</IonTitle>
-          </IonToolbar>
-        </IonHeader>
       </IonContent>
     </IonPage>
   );
 };
 
-export default Login;
+export default Register;
