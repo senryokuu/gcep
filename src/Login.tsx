@@ -3,7 +3,6 @@ import { IonButton, IonContent, IonHeader, IonInput, IonItem, IonPage, IonTitle,
 
 const Login: React.FC = () => {
 
-
   return (
     <IonPage>
       <IonHeader>
