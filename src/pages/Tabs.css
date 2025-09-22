@@ -27,6 +27,7 @@ ion-title {
       margin: auto;
       margin-bottom: 10px;
 }
+
 .tag {
       color: white;
       padding: 5px;
@@ -63,16 +64,15 @@ ion-title {
             font-size: x-small;
       }
 
-      /*profile*/
       .profile {
-            width: 50px;
+            margin: 0;
+            width: 100%;
       }
       .pfp {
             height: 80px;
       }
 }
 
-/*profile*/
 .profile {
       max-width: 600px;
       margin: auto;
