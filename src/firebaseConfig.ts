@@ -3,6 +3,8 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { signOut } from "firebase/auth";
 import { AuthCredential } from "firebase/auth/web-extension";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -26,16 +28,37 @@ const analytics = getAnalytics(app);
 
 // Initialize a service like Firestore
 const db = getFirestore(app);
-const auth = getAuth(app);
+export const auth = getAuth(app);
 
-export async function registerUser(username: string, password:string) {
+export async function registerUser(email: string, password: string) {
   try {
-    const res = await createUserWithEmailAndPassword(auth, username, password)
-    console.log(res)
+    const res = await createUserWithEmailAndPassword(auth, email, password);
+    console.log("User registered:", res.user);
+    return res.user;
+  } catch (error) {
+    console.log("Registration error:", error);
+    throw error;
   }
-  catch(error){
-    console.log(error)
-    return false
+}
+
+export async function loginUser(email: string, password: string) {
+  try {
+    const res = await signInWithEmailAndPassword(auth, email, password);
+    console.log("User logged in:", res.user);
+    return res.user;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function logoutUser() {
+  try {
+    await signOut(auth);
+    console.log("User signed out successfully");
+    return true; // optional: return true on success
+  } catch (error) {
+    console.error("Error signing out:", error);
+    return false; // optional: return false on error
   }
 }
 

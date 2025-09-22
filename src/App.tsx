@@ -34,6 +34,17 @@ import './theme/variables.css';
 
 setupIonicReact();
 
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebaseConfig";
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    console.log("User is signed in:", user.email);
+  } else {
+    console.log("User is signed out");
+  }
+});
+
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>

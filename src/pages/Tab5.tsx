@@ -1,10 +1,19 @@
-import { IonList, IonItem, IonThumbnail, IonLabel, IonIcon, IonFab, IonFabButton, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
+import { IonToast, IonList, IonItem, IonThumbnail, IonLabel, IonIcon, IonFab, IonFabButton, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import { home } from 'ionicons/icons';
 import './Tabs.css';
 import { usercreds } from '../data/userCreds';
 import { add } from 'ionicons/icons';
+import { auth } from "../firebaseConfig";
+import { useHistory } from 'react-router-dom';
+import { logoutUser } from '../firebaseConfig';
+import { useState } from 'react';
 
 const Tab5: React.FC = () => {
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastColor, setToastColor] = useState<"success" | "danger">("success");
+  const [showToast, setShowToast] = useState(false);
+  const history = useHistory();
+
   return (
     <IonPage>
       <IonHeader>
@@ -49,7 +58,20 @@ const Tab5: React.FC = () => {
                         <IonItem button routerLink="/notifications">
                           <IonLabel>Settings</IonLabel>
                         </IonItem>
-                        <IonItem button routerLink="/login">
+                        <IonItem button onClick={async () => {
+                          const success = await logoutUser();
+                          if (success) {
+                            if (success) {
+                              setToastMessage("You have been logged out.");
+                              setToastColor("success");
+                              setShowToast(true);
+                            history.push("/login"); // redirect to login
+                          } else {
+                            setToastMessage("Logout failed. Please try again.");
+                            setToastColor("danger");
+                            setShowToast(true);
+                          }
+                        }}}>
                           <IonLabel>Logout</IonLabel>
                         </IonItem>
                       </IonList>
@@ -65,6 +87,16 @@ const Tab5: React.FC = () => {
 							<IonIcon icon={home} />
 						</IonFabButton>
 					</IonFab>
+
+          <IonToast
+          isOpen={showToast}
+          onDidDismiss={() => setShowToast(false)}
+          message={toastMessage}
+          duration={2000}
+          color={toastColor}
+          cssClass="custom-toast"
+          />
+
       </IonContent>
     </IonPage>
   );

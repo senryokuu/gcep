@@ -31,8 +31,6 @@ ion-tab-button ion-icon {
       color: var(--ion-color-gc);
 }
 
-
-
 .loginform-container {
       display: flex;
       justify-content: center; /* Horizontally centers the form */
@@ -54,6 +52,12 @@ ion-tab-button ion-icon {
       color: var(--ion-color-gc);
 }
 
+.logreg_title {
+      text-align: center;
+      font-size: 1.5rem; /* Makes the title bigger */
+      color: var(--ion-color-gc);
+}
+
 @media (max-width: 480px) {
       ion-tab-bar {
             height: 40px;
@@ -63,5 +67,18 @@ ion-tab-button ion-icon {
       }
       ion-tab-button ion-label {
             display: none;
+      }
+      .loginform-container {
+            width: 80%;
+            margin: 0 auto; /* keeps it centered */
+      }
+      .loginform {
+            width: 100%;
+      }
+      .loginform ion-item {
+            width: 100%;
+      }
+      .loginform ion-input {
+            width: 100%;
       }
 }
