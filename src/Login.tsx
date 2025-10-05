@@ -1,5 +1,6 @@
-import { IonButton, IonContent, IonHeader, IonInput, IonItem, IonPage, IonTitle, IonToast, IonToolbar } from '@ionic/react';
-import { loginUser } from './firebaseConfig';
+import { IonLabel, IonButton, IonContent, IonHeader, IonInput, IonItem, IonPage, IonTitle, IonToast, IonToolbar } from '@ionic/react';
+import { loginUser, db } from './firebaseConfig';
+import { doc, getDoc } from "firebase/firestore";
 import { useState } from 'react';
 import { useHistory } from "react-router-dom";
 
@@ -21,14 +22,33 @@ const Login: React.FC = () => {
 
     try {
       const user = await loginUser(email, password);
-    
+  
       if (user) {
-        setToastMessage(`Welcome back, ${user.email}!`);
-        setToastColor("success");
-        setShowToast(true);
-        setTimeout(() => {
-          history.push("/home");
-        }, 1500);
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
+  
+        if (docSnap.exists()) {
+          const userData = docSnap.data();
+          console.log("User type:", userData.accountType);
+  
+          if (userData.accountType === "admin" || userData.accountType === "organizer") {
+            setToastMessage(`Welcome back, ${user.email}! (Organizer)`);
+            setToastColor("success");
+            setShowToast(true);
+            setTimeout(() => {
+              history.push("/admin");
+            }, 1500);
+          } else {
+            setToastMessage(`Welcome back, ${user.email}!`);
+            setToastColor("success");
+            setShowToast(true);
+            setTimeout(() => {
+              history.push("/home");
+            }, 1500);
+          }
+        } else {
+          console.warn("No user document found in Firestore!");
+        }
       }
     } catch (error: any) {
       setToastMessage("Invalid email or password");
@@ -41,16 +61,13 @@ const Login: React.FC = () => {
   
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className='ion-padding' scrollY={false}>
+      <IonContent className='ion-padding auth-background' scrollY={false}>
         <h1 className='appname'>Gordon College Engagement Platform</h1>
         <div className='loginform-container'>
           <form className='loginform'>
           <h1 className='logreg_title'>Login</h1>
+
+          <IonLabel>Email</IonLabel>
             <IonItem>
               <IonInput
                 placeholder="Email"
@@ -59,6 +76,7 @@ const Login: React.FC = () => {
               />
             </IonItem>
 
+            <IonLabel>Password</IonLabel>
             <IonItem>
               <IonInput 
                 type="password"
@@ -66,6 +84,7 @@ const Login: React.FC = () => {
                 value={password}
                 onIonInput={(e) => setPassword(e.detail.value!)}
               />
+            
             </IonItem>
               <IonButton onClick={login}>Login</IonButton>
               <IonButton routerLink='/register'>Register</IonButton>

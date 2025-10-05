@@ -1,7 +1,9 @@
-import { IonButton, IonInput, IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonToast, IonItem } from '@ionic/react';
-import { registerUser } from './firebaseConfig'
+import { IonIcon, IonLabel, IonSelect, IonSelectOption, IonButton, IonInput, IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonToast, IonItem } from '@ionic/react';
+import { registerUser, db } from './firebaseConfig'
+import { doc, setDoc } from "firebase/firestore";
 import { useState } from 'react';
 import { useHistory } from "react-router-dom";
+import { arrowBackOutline } from "ionicons/icons";
 import './App.css'
 
 const Register: React.FC = () => {
@@ -11,6 +13,7 @@ const Register: React.FC = () => {
   const [toastMessage, setToastMessage] = useState("");
   const [toastColor, setToastColor] = useState<"success" | "danger">("success");
   const [showToast, setShowToast] = useState(false);
+  const [accountType, setAccountType] = useState("");
   const history = useHistory();
 
   async function register() {
@@ -45,6 +48,11 @@ const Register: React.FC = () => {
     try {
       const user = await registerUser(email, password);
       if (user) {
+        await setDoc(doc(db, "users", user.uid), {
+          email: email,
+          accountType: accountType, // default for now
+        });
+  
         setToastMessage("User registered successfully! You may now log in.");
         setToastColor("success");
         setShowToast(true);
@@ -67,15 +75,19 @@ const Register: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className='ion-padding' scrollY={false}>
+      <IonContent className='ion-padding auth-background' scrollY={false}>
         <div className='loginform-container'>
           <form className='loginform'>
-          <h1 className='logreg_title'>Register</h1>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
+            <IonIcon
+              icon={arrowBackOutline}
+              className="back-icon"
+              onClick={() => history.push("/login")}
+            />
+            <h1 className='logreg_title'>Register</h1>
+          </div>
+          
+            <IonLabel>E-mail</IonLabel>
             <IonItem>
               <IonInput
                 placeholder="Email"
@@ -83,6 +95,8 @@ const Register: React.FC = () => {
                 onIonInput={(e) => setEmail(e.detail.value!)}
               />
             </IonItem>
+
+            <IonLabel>Password</IonLabel>
             <IonItem>
             <IonInput
               type="password"
@@ -91,6 +105,8 @@ const Register: React.FC = () => {
               onIonInput={(e) => setPassword(e.detail.value!)}
             />
             </IonItem>
+
+            <IonLabel>Confirm Password</IonLabel>
             <IonItem>
             <IonInput
               type="password"
@@ -98,6 +114,14 @@ const Register: React.FC = () => {
               value={cpassword}
               onIonInput={(e) => setcPassword(e.detail.value!)}
             />
+            </IonItem>
+
+            <IonLabel>Select Account Type</IonLabel>
+            <IonItem>
+              <IonSelect value={accountType} onIonChange={(e) => setAccountType(e.detail.value)}>
+                <IonSelectOption value="student">Student</IonSelectOption>
+                <IonSelectOption value="organizer">Event Organizer</IonSelectOption>
+              </IonSelect>
             </IonItem>
             <IonButton onClick={register}>Register</IonButton>
           </form>

@@ -2,6 +2,43 @@
       --ion-padding: 10px;
 }
 
+.auth-background {
+      --background: none;
+      background: 
+      linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.9)),
+      url('../public/assets/birdseye.jpg') center / cover no-repeat fixed;
+      background-size: cover;
+      background-position: bottom;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      opacity: 0.8;
+}
+
+ion-label {
+      font-weight: bold;
+      color: var(--ion-color-gc);
+}
+
+ion-item {
+      padding: 10px;
+      margin-bottom: 10px;
+}
+
+.back-icon {
+      position: absolute;
+      left: 0;
+      font-size: 24px;
+      color: var(--ion-color-gc);
+      cursor: pointer;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+      --ripple-color: var(--ion-color-primary);
+}
+
+.back-icon:hover {
+      transform: scale(1.1);
+      opacity: 0.7;
+}
+
 ion-tab-bar {
       z-index: 100;
       height: 50px;
@@ -40,25 +77,32 @@ ion-tab-button ion-icon {
     
 .loginform {
       width: 50%;
-      max-width: 600px; /* Optional: Prevents it from getting too wide on large screens */
+      background-color: white;
+      border-radius: 16px;
+      max-width: 500px; /* Optional: Prevents it from getting too wide on large screens */
       padding: 20px;
       box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
 }
 
 .appname {
       text-align: center;
-      margin-bottom: 20px; /* Adds space between the title and the form */
+      margin-bottom: -30px; /* Adds space between the title and the form */
       font-size: 2.5rem; /* Makes the title bigger */
-      color: var(--ion-color-gc);
+      color: var(--ion-color-gc-light);
 }
 
 .logreg_title {
       text-align: center;
       font-size: 1.5rem; /* Makes the title bigger */
       color: var(--ion-color-gc);
+      margin-bottom: 20px;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 720px) {
+      .appname {
+            padding: 20px;
+            margin-top: 30px;
+      }
       ion-tab-bar {
             height: 40px;
       }
@@ -69,7 +113,7 @@ ion-tab-button ion-icon {
             display: none;
       }
       .loginform-container {
-            width: 80%;
+            width: 90%;
             margin: 0 auto; /* keeps it centered */
       }
       .loginform {
