@@ -48,15 +48,13 @@ const Register: React.FC = () => {
     try {
       const user = await registerUser(email, password, accountType);
       if (user) {
-        await setDoc(doc(db, "users", user.uid), {
-          email: email,
-          accountType: accountType,
-        });
-  
         setToastMessage("User registered successfully! You may now log in.");
         setToastColor("success");
         setShowToast(true);
-        history.push("/login");
+
+        setTimeout(() => {
+          history.push("/login");
+        }, 1500);
       }
     } catch (error: any) {
       if (error.code === "auth/email-already-in-use") {

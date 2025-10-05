@@ -30,25 +30,33 @@ export const auth = getAuth(app);
 
 export async function registerUser(email: string, password: string, accountType: string) {
   try {
-    // create user in Firebase Authentication
     const res = await createUserWithEmailAndPassword(auth, email, password);
     const user = res.user;
 
-    console.log("User registered:", user);
+    const baseName = email.split("@")[0];
+    const defaultPfp = "/assets/pfp.png";
 
-    // store user data in Firestore
-    await setDoc(doc(db, "users", user.uid), {
+    const userData: any = {
       email: user.email,
+      name: baseName,
+      username: baseName,
+      pfp: defaultPfp,
       accountType: accountType,
+      studentid: accountType === "student" ? baseName : "",
       createdAt: new Date(),
-    });
+    };
+
+    console.log("Firestore userData being written:", userData);
+
+    await setDoc(doc(db, "users", user.uid), userData);
 
     return user;
   } catch (error) {
-    console.log("Registration error:", error);
+    console.error("Registration error:", error);
     throw error;
   }
 }
+
 
 export async function loginUser(email: string, password: string) {
   try {
