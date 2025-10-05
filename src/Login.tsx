@@ -1,132 +1,87 @@
-import { IonLabel, IonButton, IonContent, IonHeader, IonInput, IonItem, IonPage, IonTitle, IonToast, IonToolbar, IonIcon } from '@ionic/react';
-import { loginUser, db } from './firebaseConfig';
+import { IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonThumbnail, IonTitle, IonToolbar } from '@ionic/react';
+import { auth, db } from "./firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
-import { logIn } from "ionicons/icons";
-import { useState } from 'react';
-import { useHistory } from "react-router-dom";
-import './App.css'
+import { onAuthStateChanged } from "firebase/auth";
+import { useEffect, useState } from 'react';
 
-const Login: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [toastMessage, setToastMessage] = useState("");
-  const [toastColor, setToastColor] = useState<"success" | "danger">("success");
-  const [showToast, setShowToast] = useState(false);
-  const history = useHistory();
+const Tab5: React.FC = () => {
+  const [userData, setUserData] = useState<any | null>(null);
 
-  async function login() {
-    if (email.trim() === '' || password.trim() === '') {
-      setToastMessage("Please fill out all fields.");
-      setToastColor("danger");
-      setShowToast(true);
-      return;
-    }
+  useEffect(() => {
+    // Listen for auth state changes
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser) {
+        try {
+          const docRef = doc(db, "users", currentUser.uid);
+          const docSnap = await getDoc(docRef);
 
-    try {
-      const user = await loginUser(email, password);
-  
-      if (user) {
-        const docRef = doc(db, "users", user.uid);
-        const docSnap = await getDoc(docRef);
-  
-        if (docSnap.exists()) {
-          const userData = docSnap.data();
-          console.log("User type:", userData.accountType);
-  
-          if (userData.accountType === "event organizer") {
-            setToastMessage(`Welcome back, ${user.email}! (Organizer)`);
-            setToastColor("success");
-            setShowToast(true);
-            setTimeout(() => {
-              history.push("/profile");
-            }, 1500);
-          } else if (userData.accountType === "s.admin") {
-            setToastMessage(`Welcome back, ${user.email}! (Admin)`);
-            setToastColor("success");
-            setShowToast(true);
-            setTimeout(() => {
-              history.push("/profile");
-            }, 1500);
+          if (docSnap.exists()) {
+            setUserData(docSnap.data());
           } else {
-            setToastMessage(`Welcome back, ${user.email}!`);
-            setToastColor("success");
-            setShowToast(true);
-            setTimeout(() => {
-              history.push("/home");
-            }, 1500);
+            console.log("No user document found in Firestore!");
           }
-        } else {
-          console.warn("No user document found in Firestore!");
+        } catch (error) {
+          console.error("Error fetching user data:", error);
         }
+      } else {
+        console.log("No user logged in!");
+        setUserData(null);
       }
-    } catch (error: any) {
-      setToastMessage("Invalid email or password");
-      setToastColor("danger");
-      setShowToast(true);
-    
-      console.error("Firebase login error:", error.code, error.message);
-    }
-  }
-  
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   return (
     <IonPage>
-      <IonContent className='ion-padding auth-background' scrollY={false}>
-        <h1 className='appname'>Gordon College Engagement Platform</h1>
-        <div className='loginform-container'>
-          <form className='loginform'>
-          <h1 className='logreg_title'>Login</h1>
+      <IonHeader>
+        <IonToolbar>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <img
+              src="assets/favicon.png"
+              alt="logo"
+              style={{ width: "40px", height: "40px", marginBottom: "10px", marginLeft: "20px" }}
+            />
+            <IonTitle style={{ marginTop: "5px" }}>
+              {userData ? userData.username : "Loading..."}
+            </IonTitle>
+          </div>
+        </IonToolbar>
+      </IonHeader>
 
-          <IonLabel className='logregtxt'>Email</IonLabel>
-            <IonItem>
-              <IonInput
-                placeholder="Email"
-                value={email}
-                onIonInput={(e) => setEmail(e.detail.value!)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    login();
-                  }
-                }}
-              />
-            </IonItem>
-
-            <IonLabel className='logregtxt'>Password</IonLabel>
-            <IonItem>
-              <IonInput 
-                type="password"
-                placeholder="Password"
-                value={password}
-                onIonInput={(e) => setPassword(e.detail.value!)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    login();
-                  }
-                }}
-              />
-            </IonItem>
-
-              <IonButton className="logbtn" fill="solid" shape='round' onClick={login}>
-                <IonIcon slot="icon-only" icon={logIn}></IonIcon>
-                Login
-              </IonButton>
-
-              <IonButton className ="forgotbtn" routerLink='/forgot' fill="clear">Forgot Password?</IonButton>
-              <IonButton className ="toregbtn" routerLink='/register' fill="clear">Don't have an account? Register</IonButton>
-          </form>
-        </div>
-
-        <IonToast
-          isOpen={showToast}
-          onDidDismiss={() => setShowToast(false)}
-          message={toastMessage}
-          duration={2000}
-          color={toastColor}
-          cssClass="custom-toast"
-        />
-
+      <IonContent fullscreen>
+        <IonGrid>
+          <IonRow>
+            <IonCol>
+              {userData && (
+                <IonCard className="profile">
+                  <IonCardHeader>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <IonThumbnail className="pfp">
+                        <img
+                          src={userData.pfp}
+                          alt="profile picture"
+                          style={{ borderRadius: "50%" }}
+                        />
+                      </IonThumbnail>
+                      <div>
+                        <IonCardTitle className="profile-name" style={{ marginBottom: "10px" }}>
+                          {userData.name}
+                        </IonCardTitle>
+                        <IonCardSubtitle>
+                          {userData.accountType === "student" ? userData.studentid : userData.accountType}
+                        </IonCardSubtitle>
+                      </div>
+                    </div>
+                  </IonCardHeader>
+                </IonCard>
+              )}
+            </IonCol>
+          </IonRow>
+        </IonGrid>
       </IonContent>
     </IonPage>
   );
 };
 
-export default Login;
+export default Tab5;
