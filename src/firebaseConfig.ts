@@ -1,10 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore } from "firebase/firestore";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { signOut } from "firebase/auth";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { AuthCredential } from "firebase/auth/web-extension";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -30,11 +28,22 @@ const analytics = getAnalytics(app);
 const db = getFirestore(app);
 export const auth = getAuth(app);
 
-export async function registerUser(email: string, password: string) {
+export async function registerUser(email: string, password: string, accountType: string) {
   try {
+    // create user in Firebase Authentication
     const res = await createUserWithEmailAndPassword(auth, email, password);
-    console.log("User registered:", res.user);
-    return res.user;
+    const user = res.user;
+
+    console.log("User registered:", user);
+
+    // store user data in Firestore
+    await setDoc(doc(db, "users", user.uid), {
+      email: user.email,
+      accountType: accountType,
+      createdAt: new Date(),
+    });
+
+    return user;
   } catch (error) {
     console.log("Registration error:", error);
     throw error;

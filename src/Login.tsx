@@ -1,8 +1,10 @@
-import { IonLabel, IonButton, IonContent, IonHeader, IonInput, IonItem, IonPage, IonTitle, IonToast, IonToolbar } from '@ionic/react';
+import { IonLabel, IonButton, IonContent, IonHeader, IonInput, IonItem, IonPage, IonTitle, IonToast, IonToolbar, IonIcon } from '@ionic/react';
 import { loginUser, db } from './firebaseConfig';
 import { doc, getDoc } from "firebase/firestore";
+import { logIn } from "ionicons/icons";
 import { useState } from 'react';
 import { useHistory } from "react-router-dom";
+import './App.css'
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -31,12 +33,19 @@ const Login: React.FC = () => {
           const userData = docSnap.data();
           console.log("User type:", userData.accountType);
   
-          if (userData.accountType === "admin" || userData.accountType === "organizer") {
+          if (userData.accountType === "event organizer") {
             setToastMessage(`Welcome back, ${user.email}! (Organizer)`);
             setToastColor("success");
             setShowToast(true);
             setTimeout(() => {
-              history.push("/admin");
+              history.push("/profile");
+            }, 1500);
+          } else if (userData.accountType === "s.admin") {
+            setToastMessage(`Welcome back, ${user.email}! (Admin)`);
+            setToastColor("success");
+            setShowToast(true);
+            setTimeout(() => {
+              history.push("/profile");
             }, 1500);
           } else {
             setToastMessage(`Welcome back, ${user.email}!`);
@@ -67,28 +76,42 @@ const Login: React.FC = () => {
           <form className='loginform'>
           <h1 className='logreg_title'>Login</h1>
 
-          <IonLabel>Email</IonLabel>
+          <IonLabel className='logregtxt'>Email</IonLabel>
             <IonItem>
               <IonInput
                 placeholder="Email"
                 value={email}
                 onIonInput={(e) => setEmail(e.detail.value!)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    login();
+                  }
+                }}
               />
             </IonItem>
 
-            <IonLabel>Password</IonLabel>
+            <IonLabel className='logregtxt'>Password</IonLabel>
             <IonItem>
               <IonInput 
                 type="password"
                 placeholder="Password"
                 value={password}
                 onIonInput={(e) => setPassword(e.detail.value!)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    login();
+                  }
+                }}
               />
-            
             </IonItem>
-              <IonButton onClick={login}>Login</IonButton>
-              <IonButton routerLink='/register'>Register</IonButton>
-              <IonButton routerLink='/forgot' fill="clear" color="primary">Forgot Password?</IonButton>
+
+              <IonButton className="logbtn" fill="solid" shape='round' onClick={login}>
+                <IonIcon slot="icon-only" icon={logIn}></IonIcon>
+                Login
+              </IonButton>
+
+              <IonButton className ="forgotbtn" routerLink='/forgot' fill="clear">Forgot Password?</IonButton>
+              <IonButton className ="toregbtn" routerLink='/register' fill="clear">Don't have an account? Register</IonButton>
           </form>
         </div>
 

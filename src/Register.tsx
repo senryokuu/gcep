@@ -3,7 +3,7 @@ import { registerUser, db } from './firebaseConfig'
 import { doc, setDoc } from "firebase/firestore";
 import { useState } from 'react';
 import { useHistory } from "react-router-dom";
-import { arrowBackOutline } from "ionicons/icons";
+import { arrowBackOutline, clipboardSharp } from "ionicons/icons";
 import './App.css'
 
 const Register: React.FC = () => {
@@ -46,11 +46,11 @@ const Register: React.FC = () => {
     }
 
     try {
-      const user = await registerUser(email, password);
+      const user = await registerUser(email, password, accountType);
       if (user) {
         await setDoc(doc(db, "users", user.uid), {
           email: email,
-          accountType: accountType, // default for now
+          accountType: accountType,
         });
   
         setToastMessage("User registered successfully! You may now log in.");
@@ -87,7 +87,7 @@ const Register: React.FC = () => {
             <h1 className='logreg_title'>Register</h1>
           </div>
           
-            <IonLabel>E-mail</IonLabel>
+            <IonLabel className='logregtxt'>E-mail</IonLabel>
             <IonItem>
               <IonInput
                 placeholder="Email"
@@ -96,7 +96,7 @@ const Register: React.FC = () => {
               />
             </IonItem>
 
-            <IonLabel>Password</IonLabel>
+            <IonLabel className='regtxt'>Password</IonLabel>
             <IonItem>
             <IonInput
               type="password"
@@ -106,7 +106,7 @@ const Register: React.FC = () => {
             />
             </IonItem>
 
-            <IonLabel>Confirm Password</IonLabel>
+            <IonLabel className='logregtxt'>Confirm Password</IonLabel>
             <IonItem>
             <IonInput
               type="password"
@@ -116,14 +116,21 @@ const Register: React.FC = () => {
             />
             </IonItem>
 
-            <IonLabel>Select Account Type</IonLabel>
+            <IonLabel className='logregtxt'>Select Account Type</IonLabel>
             <IonItem>
-              <IonSelect value={accountType} onIonChange={(e) => setAccountType(e.detail.value)}>
+              <IonSelect value={accountType} interface="popover" onIonChange={(e) => setAccountType(e.detail.value)}>
                 <IonSelectOption value="student">Student</IonSelectOption>
-                <IonSelectOption value="organizer">Event Organizer</IonSelectOption>
+                <IonSelectOption value="event organizer">Event Organizer</IonSelectOption>
               </IonSelect>
             </IonItem>
-            <IonButton onClick={register}>Register</IonButton>
+
+            <div className='divregbtn'>
+              <IonButton className="regbtn" fill="solid" shape='round' onClick={register}>
+                <IonIcon slot="icon-only" icon={clipboardSharp}></IonIcon>
+                Register
+              </IonButton>
+            </div>
+
           </form>
         </div>
 
