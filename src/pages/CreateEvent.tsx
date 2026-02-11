@@ -93,7 +93,7 @@ const CreateEvent: React.FC = () => {
         <IonToolbar>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <img
-              src="favicon.png"
+              src="assets/favicon.png"
               alt="logo"
               style={{ width: '40px', height: '40px', marginBottom: '10px', marginLeft: '20px' }}
             />
