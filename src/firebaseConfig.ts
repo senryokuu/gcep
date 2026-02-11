@@ -4,6 +4,8 @@ import { getAnalytics } from "firebase/analytics";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { AuthCredential } from "firebase/auth/web-extension";
+import { getStorage } from "firebase/storage";
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -27,6 +29,8 @@ const analytics = getAnalytics(app);
 // Initialize a service like Firestore
 const db = getFirestore(app);
 export const auth = getAuth(app);
+
+export const storage = getStorage(app);
 
 export async function registerUser(email: string, password: string, accountType: string) {
   try {

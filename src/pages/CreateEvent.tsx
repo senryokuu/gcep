@@ -16,47 +16,75 @@ import {
   IonTextarea,
   IonTitle,
   IonToolbar,
+  IonToast,
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
+import { db, storage, auth } from '../firebaseConfig';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { User } from 'firebase/auth';
 
 const CreateEvent: React.FC = () => {
   const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
   const [filter1, setFilter1] = useState('');
   const [filter2, setFilter2] = useState('');
-  const [time, setTime] = useState('');
   const [date, setDate] = useState('');
-  const [description, setDescription] = useState('');
+  const [time, setTime] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [toastMessage, setToastMessage] = useState('');
+  const [showToast, setShowToast] = useState(false);
+
   const history = useHistory();
+
+  const currentUser: User | null = auth.currentUser;
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
       setImageFile(file);
+
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
+      reader.onloadend = () => setImagePreview(reader.result as string);
       reader.readAsDataURL(file);
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const eventData = {
-      title,
-      filter1,
-      filter2,
-      time,
-      date,
-      description,
-      image: imagePreview || 'assets/default.jpg',
-    };
+    try {
+      let imageUrl = 'assets/default.jpg';
 
-    localStorage.setItem('newEvent', JSON.stringify(eventData));
-    history.push('/home');
+      // Upload image to Firebase Storage if selected
+      if (imageFile) {
+        const storageRef = ref(storage, `event-images/${Date.now()}-${imageFile.name}`);
+        await uploadBytes(storageRef, imageFile);
+        imageUrl = await getDownloadURL(storageRef);
+      }
+
+      // Add event to Firestore with dynamic cBy
+      await addDoc(collection(db, 'events'), {
+        title,
+        desc: description,
+        tags: [filter1, filter2].filter(Boolean),
+        timedate: new Date(`${date}T${time}`),
+        image: imageUrl,
+        cAt: serverTimestamp(),
+        cBy: currentUser ? currentUser.uid : 'unknown', // dynamic user ID
+      });
+
+      setToastMessage('Event created successfully!');
+      setShowToast(true);
+
+      // Redirect after short delay
+      setTimeout(() => history.push('/home'), 1500);
+    } catch (error) {
+      console.error('Error creating event:', error);
+      setToastMessage('Failed to create event.');
+      setShowToast(true);
+    }
   };
 
   return (
@@ -78,16 +106,14 @@ const CreateEvent: React.FC = () => {
         <IonGrid>
           <IonRow>
             <IonCol size-md="6" offset-md="3" size-xs="12">
-              <form onSubmit={handleSubmit} style={{ padding: 20, boxShadow: '0 0 30px rgba(0, 0, 0, 0.2)' }}>
+              <form
+                onSubmit={handleSubmit}
+                style={{ padding: 20, boxShadow: '0 0 30px rgba(0,0,0,0.2)' }}
+              >
                 <IonItem>
                   <div style={{ marginTop: 15, flexDirection: 'column' }}>
                     <IonLabel>Upload Event Image</IonLabel>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageChange}
-                      style={{ marginTop: 8 }}
-                    />
+                    <input type="file" accept="image/*" onChange={handleImageChange} style={{ marginTop: 8 }} />
                     {imagePreview && (
                       <img
                         src={imagePreview}
@@ -123,10 +149,7 @@ const CreateEvent: React.FC = () => {
                   <IonLabel position="stacked">Event Time</IonLabel>
                   <IonDatetime
                     value={time}
-                    onIonChange={(e) => {
-                      const val = e.detail.value;
-                      if (typeof val === 'string') setTime(val);
-                    }}
+                    onIonChange={(e) => setTime(e.detail.value as string)}
                     presentation="time"
                   />
                 </IonItem>
@@ -135,10 +158,7 @@ const CreateEvent: React.FC = () => {
                   <IonLabel position="stacked">Event Date</IonLabel>
                   <IonDatetime
                     value={date}
-                    onIonChange={(e) => {
-                      const val = e.detail.value;
-                      if (typeof val === 'string') setDate(val);
-                    }}
+                    onIonChange={(e) => setDate(e.detail.value as string)}
                     presentation="date"
                   />
                 </IonItem>
@@ -147,12 +167,12 @@ const CreateEvent: React.FC = () => {
                   <IonLabel position="stacked">Is this a campus event?</IonLabel>
                   <IonSelect
                     value={filter1}
-                    onIonChange={(e) => setFilter1(e.detail.value)}
+                    onIonChange={(e) => setFilter1(e.detail.value as string)}
                     placeholder="Select filter 1"
                     required
                   >
                     <IonSelectOption value="Gordon College">Yes, this is a campus event.</IonSelectOption>
-                    <IonSelectOption value="">No. this is a department exclusive event.</IonSelectOption>
+                    <IonSelectOption value="">No, department exclusive event.</IonSelectOption>
                   </IonSelect>
                 </IonItem>
 
@@ -160,7 +180,7 @@ const CreateEvent: React.FC = () => {
                   <IonLabel position="stacked">Department</IonLabel>
                   <IonSelect
                     value={filter2}
-                    onIonChange={(e) => setFilter2(e.detail.value)}
+                    onIonChange={(e) => setFilter2(e.detail.value as string)}
                     placeholder="Select filter 2"
                   >
                     <IonSelectOption value="BSCS">BSCS</IonSelectOption>
@@ -168,17 +188,21 @@ const CreateEvent: React.FC = () => {
                   </IonSelect>
                 </IonItem>
 
-                <IonButton
-                  expand="block"
-                  type="submit"
-                  style={{ marginTop: 30 }}
-                >
+                <IonButton expand="block" type="submit" style={{ marginTop: 30 }}>
                   Create Event
                 </IonButton>
               </form>
             </IonCol>
           </IonRow>
         </IonGrid>
+
+        <IonToast
+          isOpen={showToast}
+          message={toastMessage}
+          duration={2000}
+          color={toastMessage.includes('success') ? 'success' : 'danger'}
+          onDidDismiss={() => setShowToast(false)}
+        />
       </IonContent>
     </IonPage>
   );

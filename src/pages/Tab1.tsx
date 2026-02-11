@@ -24,6 +24,17 @@ import {
   import { db } from "../firebaseConfig";
   import { collection, getDocs } from "firebase/firestore";
   
+  // TypeScript type for Event
+  interface EventType {
+	id: string;
+	title: string;
+	desc: string;
+	image?: string;
+	tags?: string[] | string; // can be array or string from Firestore
+	timedate?: { seconds: number; nanoseconds: number };
+	cAt?: { toMillis: () => number };
+  }
+  
   export const getTagColorClass = (tag: string) => {
 	switch (tag) {
 	  case "Gordon College":
@@ -38,25 +49,22 @@ import {
   };
   
   const Tab1: React.FC = () => {
-  
-	const [allEvents, setAllEvents] = useState<any[]>([]);
+	const [allEvents, setAllEvents] = useState<EventType[]>([]);
   
 	useEffect(() => {
 	  const fetchEvents = async () => {
 		try {
 		  const querySnapshot = await getDocs(collection(db, "events"));
   
-		  const eventsData = querySnapshot.docs.map((document) => {
-			return {
-			  id: document.id,
-			  ...document.data()
-			};
+		  const eventsData: EventType[] = querySnapshot.docs.map(doc => {
+			const data = doc.data() as Omit<EventType, 'id'>; // exclude `id` from doc.data()
+			return { id: doc.id, ...data };
 		  });
   
-		  eventsData.sort((a: any, b: any) =>
-			b?.cAt?.toMillis?.() - a?.cAt?.toMillis?.()
-		  );
+		  // Sort by creation timestamp if exists
+		  eventsData.sort((a, b) => (b.cAt?.toMillis?.() || 0) - (a.cAt?.toMillis?.() || 0));
   
+		  console.log("Fetched events:", eventsData);
 		  setAllEvents(eventsData);
   
 		} catch (error) {
@@ -66,6 +74,20 @@ import {
   
 	  fetchEvents();
 	}, []);
+  
+	// Utility to safely parse tags
+	const parseTags = (tags?: string[] | string): string[] => {
+	  if (!tags) return [];
+	  if (Array.isArray(tags)) return tags;
+	  try {
+		const parsed = JSON.parse(tags);
+		if (Array.isArray(parsed)) return parsed;
+	  } catch {
+		// fallback: treat as single string tag
+		return [tags];
+	  }
+	  return [];
+	};
   
 	return (
 	  <IonPage>
@@ -93,22 +115,22 @@ import {
 				  </p>
 				)}
   
-				{allEvents.map((event: any, index: number) => (
-				  <IonCard key={event.id || index} className="post">
+				{allEvents.map((evt, index) => (
+				  <IonCard key={evt.id || index} className="post">
   
-					{event.image && (
+					{evt.image && (
 					  <img
-						src={event.image}
-						alt={event.title}
+						src={evt.image}
+						alt={evt.title}
 						style={{ height: '300px', width: '100%', objectFit: 'cover' }}
 					  />
 					)}
   
 					<IonCardHeader>
-					  <IonCardTitle>{event.title}</IonCardTitle>
+					  <IonCardTitle>{evt.title}</IonCardTitle>
 					  <IonCardSubtitle>
   
-						{event.tags && event.tags.map((tag: string, idx: number) => (
+						{parseTags(evt.tags).map((tag, idx) => (
 						  <span key={idx} className={`tag ${getTagColorClass(tag)}`}>
 							{tag}
 						  </span>
@@ -116,15 +138,15 @@ import {
   
 						<br /><br />
   
-						{event.timedate &&
-						  new Date(event.timedate.seconds * 1000).toLocaleString()
+						{evt.timedate &&
+						  new Date(evt.timedate.seconds * 1000).toLocaleString()
 						}
   
 					  </IonCardSubtitle>
 					</IonCardHeader>
   
 					<IonCardContent className="events-description">
-					  {event.desc}
+					  {evt.desc}
 					</IonCardContent>
   
 					<IonButton fill="clear">Sign up</IonButton>
