@@ -19,9 +19,8 @@ import {
   IonToast,
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
-import { db, storage, auth } from '../firebaseConfig';
+import { db, auth } from '../firebaseConfig';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { User } from 'firebase/auth';
 
 const CreateEvent: React.FC = () => {
@@ -55,13 +54,33 @@ const CreateEvent: React.FC = () => {
     e.preventDefault();
 
     try {
+      // Upload image to Netlify Storage
       let imageUrl = 'assets/default.jpg';
 
-      // Upload image to Firebase Storage if selected
+      // Upload image via Netlify Function instead of Firebase Storage
       if (imageFile) {
-        const storageRef = ref(storage, `event-images/${Date.now()}-${imageFile.name}`);
-        await uploadBytes(storageRef, imageFile);
-        imageUrl = await getDownloadURL(storageRef);
+        const reader = new FileReader();
+
+        const base64 = await new Promise<string>((resolve, reject) => {
+          reader.onload = () => {
+            const result = reader.result as string;
+            resolve(result.split(",")[1]);
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(imageFile);
+        });
+
+        const response = await fetch("/.netlify/functions/uploadEventImage", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            fileName: imageFile.name,
+            fileBase64: base64,
+          }),
+        });
+
+        const data = await response.json();
+        imageUrl = data.url;
       }
 
       // Add event to Firestore with dynamic cBy
