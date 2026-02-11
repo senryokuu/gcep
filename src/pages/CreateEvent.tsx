@@ -52,51 +52,59 @@ const CreateEvent: React.FC = () => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    try {
-      // Upload image to Netlify Storage
-      let imageUrl = 'assets/default.jpg';
+  try {
+    // Upload image to Netlify Storage or Firebase
+    let imageUrl = 'assets/default.jpg';
 
-        if (imageFile) {
-          const reader = new FileReader();
+    if (imageFile) {
+      const reader = new FileReader();
 
-          const base64 = await new Promise<string>((resolve, reject) => {
-            reader.onload = () => {
-              const result = reader.result as string;
-              resolve(result.split(",")[1]); // remove the "data:image/jpeg;base64," prefix
-            };
-            reader.onerror = reject;
-            reader.readAsDataURL(imageFile);
-          });
-
-          // Upload directly to Firebase Storage
-          imageUrl = await uploadImage(imageFile.name, base64);
-        }
-
-      // Add event to Firestore with dynamic cBy
-      await addDoc(collection(db, 'events'), {
-        title,
-        desc: description,
-        tags: [filter1, filter2].filter(Boolean),
-        timedate: new Date(`${date}T${time}`),
-        image: imageUrl,
-        cAt: serverTimestamp(),
-        cBy: currentUser ? currentUser.uid : 'unknown', // dynamic user ID
+      const base64 = await new Promise<string>((resolve, reject) => {
+        reader.onload = () => {
+          const result = reader.result as string;
+          resolve(result.split(",")[1]); // remove "data:image/jpeg;base64," prefix
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(imageFile);
       });
 
-      setToastMessage('Event created successfully!');
-      setShowToast(true);
-
-      // Redirect after short delay
-      setTimeout(() => history.push('/home'), 1500);
-    } catch (error) {
-      console.error('Error creating event:', error);
-      setToastMessage('Failed to create event.');
-      setShowToast(true);
+      // Upload directly to Firebase Storage
+      imageUrl = await uploadImage(imageFile.name, base64);
     }
-  };
+
+    // Safe handling of date and time
+    let timedate: Date;
+    if (date && time) {
+      timedate = new Date(`${date}T${time}`);
+    } else {
+      timedate = new Date(); // fallback to current date/time
+    }
+
+    // Add event to Firestore
+    await addDoc(collection(db, 'events'), {
+      title,
+      desc: description,
+      tags: [filter1, filter2].filter(Boolean),
+      timedate,
+      image: imageUrl,
+      cAt: serverTimestamp(),
+      cBy: currentUser ? currentUser.uid : 'unknown', // dynamic user ID
+    });
+
+    setToastMessage('Event created successfully!');
+    setShowToast(true);
+
+    // Redirect after short delay
+    setTimeout(() => history.push('/home'), 1500);
+  } catch (error) {
+    console.error('Error creating event:', error);
+    setToastMessage('Failed to create event.');
+    setShowToast(true);
+  }
+};
 
   return (
     <IonPage>
