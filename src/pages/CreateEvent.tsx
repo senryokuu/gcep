@@ -22,6 +22,8 @@ import { useHistory } from 'react-router-dom';
 import { db, auth } from '../firebaseConfig';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { User } from 'firebase/auth';
+import { uploadImage } from '../utils/uploadEventImage';
+
 
 const CreateEvent: React.FC = () => {
   const [title, setTitle] = useState('');
@@ -57,31 +59,21 @@ const CreateEvent: React.FC = () => {
       // Upload image to Netlify Storage
       let imageUrl = 'assets/default.jpg';
 
-      // Upload image via Netlify Function instead of Firebase Storage
-      if (imageFile) {
-        const reader = new FileReader();
+        if (imageFile) {
+          const reader = new FileReader();
 
-        const base64 = await new Promise<string>((resolve, reject) => {
-          reader.onload = () => {
-            const result = reader.result as string;
-            resolve(result.split(",")[1]);
-          };
-          reader.onerror = reject;
-          reader.readAsDataURL(imageFile);
-        });
+          const base64 = await new Promise<string>((resolve, reject) => {
+            reader.onload = () => {
+              const result = reader.result as string;
+              resolve(result.split(",")[1]); // remove the "data:image/jpeg;base64," prefix
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(imageFile);
+          });
 
-        const response = await fetch("/.netlify/functions/uploadEventImage", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            fileName: imageFile.name,
-            fileBase64: base64,
-          }),
-        });
-
-        const data = await response.json();
-        imageUrl = data.url;
-      }
+          // Upload directly to Firebase Storage
+          imageUrl = await uploadImage(imageFile.name, base64);
+        }
 
       // Add event to Firestore with dynamic cBy
       await addDoc(collection(db, 'events'), {
