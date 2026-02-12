@@ -31,8 +31,8 @@ import {
 	desc: string;
 	image?: string;
 	tags?: string[] | string; // can be array or string from Firestore
-	timedate?: { seconds: number; nanoseconds: number };
-	cAt?: { toMillis: () => number };
+	timedate?: any;
+	cAt?: any;
   }
   
   export const getTagColorClass = (tag: string) => {
@@ -62,7 +62,7 @@ import {
 		  });
   
 		  // Sort by creation timestamp if exists
-		  eventsData.sort((a, b) => (b.cAt?.toMillis?.() || 0) - (a.cAt?.toMillis?.() || 0));
+		  eventsData.sort((a, b) => toMillis(b.timedate) - toMillis(a.timedate));
   
 		  console.log("Fetched events:", eventsData);
 		  setAllEvents(eventsData);
@@ -88,6 +88,21 @@ import {
 	  }
 	  return [];
 	};
+
+	const toMillis = (ts: any) => {
+		if (!ts) return 0;
+		if (typeof ts === "number") return ts;
+		if (ts?.toMillis) return ts.toMillis();
+		if (ts?.seconds) return ts.seconds * 1000;
+		const d = new Date(ts);
+		return isNaN(d.getTime()) ? 0 : d.getTime();
+		};
+
+	const formatDate = (ts: any) => {
+		const ms = toMillis(ts);
+		return ms ? new Date(ms).toLocaleString() : "";
+		};
+
   
 	return (
 	  <IonPage>
@@ -138,9 +153,7 @@ import {
   
 						<br /><br />
   
-						{evt.timedate &&
-						  new Date(evt.timedate.seconds * 1000).toLocaleString()
-						}
+						{formatDate(evt.timedate)}
   
 					  </IonCardSubtitle>
 					</IonCardHeader>
