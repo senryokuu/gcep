@@ -75,13 +75,26 @@ const handleSubmit = async (e: React.FormEvent) => {
       imageUrl = await uploadImage(imageFile.name, base64);
     }
 
-    // Safe handling of date and time
-    let timedate: Date;
-    if (date && time) {
-      timedate = new Date(`${date}T${time}`);
-    } else {
-      timedate = new Date(); // fallback to current date/time
-    }
+      // Safe handling of date and time (IonDatetime-friendly)
+      let timedate: Date;
+
+      const datePart = date ? new Date(date) : null;
+      const timePart = time ? new Date(time) : null;
+
+      if (datePart && !isNaN(datePart.getTime()) && timePart && !isNaN(timePart.getTime())) {
+        // combine date from datePart + time from timePart
+        timedate = new Date(
+          datePart.getFullYear(),
+          datePart.getMonth(),
+          datePart.getDate(),
+          timePart.getHours(),
+          timePart.getMinutes(),
+          0,
+          0
+        );
+      } else {
+        timedate = new Date(); // fallback
+      }
 
     // Add event to Firestore
     await addDoc(collection(db, 'events'), {
