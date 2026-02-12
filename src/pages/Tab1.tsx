@@ -33,6 +33,7 @@ import {
 	tags?: string[] | string; // can be array or string from Firestore
 	timedate?: any;
 	cAt?: any;
+	cBy?: string;
   }
   
   export const getTagColorClass = (tag: string) => {
@@ -50,30 +51,51 @@ import {
   
   const Tab1: React.FC = () => {
 	const [allEvents, setAllEvents] = useState<EventType[]>([]);
+	const [usersMap, setUsersMap] = useState<{ [key: string]: string }>({});
   
 	useEffect(() => {
-	  const fetchEvents = async () => {
-		try {
-		  const querySnapshot = await getDocs(collection(db, "events"));
-  
-		  const eventsData: EventType[] = querySnapshot.docs.map(doc => {
-			const data = doc.data() as Omit<EventType, 'id'>; // exclude `id` from doc.data()
-			return { id: doc.id, ...data };
-		  });
-  
-		  // Sort by creation timestamp if exists
-		  eventsData.sort((a, b) => toMillis(b.timedate) - toMillis(a.timedate));
-  
-		  console.log("Fetched events:", eventsData);
-		  setAllEvents(eventsData);
-  
-		} catch (error) {
-		  console.error("Error fetching events:", error);
-		}
-	  };
-  
-	  fetchEvents();
-	}, []);
+
+	  	const fetchEvents = async () => {
+			try {
+			const querySnapshot = await getDocs(collection(db, "events"));
+	
+			const eventsData: EventType[] = querySnapshot.docs.map(doc => {
+				const data = doc.data() as Omit<EventType, 'id'>; // exclude `id` from doc.data()
+				return { id: doc.id, ...data };
+			});
+	
+			// Sort by creation timestamp if exists
+			eventsData.sort((a, b) => toMillis(b.timedate) - toMillis(a.timedate));
+	
+			console.log("Fetched events:", eventsData);
+			setAllEvents(eventsData);
+	
+			} catch (error) {
+			console.error("Error fetching events:", error);
+			}
+		};
+		fetchEvents();
+
+	  	const fetchUsers = async () => {
+			try {
+			const usersSnapshot = await getDocs(collection(db, "users"));
+				
+			const userData: { [key: string]: string } = {};
+
+				usersSnapshot.forEach(doc => {
+				const data = doc.data();
+				userData[doc.id] = data.name; // store UID -> name
+				});
+
+				setUsersMap(userData);
+
+		
+			} catch (error) {
+			console.error("Error fetching users:", error);
+			}
+		};
+		fetchUsers();
+		}, []);
   
 	// Utility to safely parse tags
 	const parseTags = (tags?: string[] | string): string[] => {
@@ -144,6 +166,10 @@ import {
 					<IonCardHeader>
 					  <IonCardTitle>{evt.title}</IonCardTitle>
 					  <IonCardSubtitle>
+
+						<IonCardContent className="events-description">
+							{usersMap[evt.cBy || ""] || "Unknown User"}
+						</IonCardContent>
   
 						{parseTags(evt.tags).map((tag, idx) => (
 						  <span key={idx} className={`tag ${getTagColorClass(tag)}`}>
